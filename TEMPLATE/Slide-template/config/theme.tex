@@ -27,28 +27,24 @@
 % =========================================================
 \newcommand{\TemplateLogo}{%
     \IfFileExists{images/logo.png}{%
-        \includegraphics[width=3.25cm,height=0.92cm,keepaspectratio]{images/logo.png}%
+        \vbox{%
+            \hbox to 3.25cm{\hfil\includegraphics[width=3.25cm,height=0.74cm,keepaspectratio]{images/logo.png}\hfil}%
+            \vskip 1pt
+            \hbox to 3.25cm{\hfil{\color{TitleColor}\fontsize{5.2}{6}\selectfont\bfseries Institute of Information}\hfil}%
+            \hbox to 3.25cm{\hfil{\color{TitleColor}\fontsize{5.2}{6}\selectfont\bfseries Technology}\hfil}%
+        }%
     }{%
         \begin{tikzpicture}
-            \node[
-                draw=LineColor,
-                rounded corners=2pt,
-                inner xsep=6pt,
-                inner ysep=3pt,
-                text=SecondaryColor,
-                font=\fontsize{7}{8}\selectfont\bfseries
-            ]{YOUR LOGO};
+            \node[draw=LineColor,rounded corners=2pt,inner xsep=6pt,inner ysep=3pt,
+                text=SecondaryColor,font=\fontsize{7}{8}\selectfont\bfseries]{YOUR LOGO};
         \end{tikzpicture}%
     }%
 }
 
 \setbeamertemplate{background}{%
     \begin{tikzpicture}[remember picture,overlay]
-        \node[
-            anchor=north east,
-            xshift=-0.42cm,
-            yshift=-0.12cm
-        ] at (current page.north east) {\TemplateLogo};
+        \node[anchor=north east,xshift=-0.42cm,yshift=-0.12cm]
+        at (current page.north east) {\TemplateLogo};
     \end{tikzpicture}%
 }
 
