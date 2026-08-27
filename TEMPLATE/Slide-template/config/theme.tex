@@ -23,7 +23,7 @@
 \DefaultStyle
 
 % =========================================================
-% Logo
+% Full-slide background and logo
 % =========================================================
 \newcommand{\TemplateLogo}{%
     \IfFileExists{images/logo.png}{%
@@ -42,6 +42,10 @@
 
 \setbeamertemplate{background}{%
     \begin{tikzpicture}[remember picture,overlay]
+        \IfFileExists{images/slide-background.png}{%
+            \node[anchor=center,inner sep=0pt,opacity=0.45]
+            at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{images/slide-background.png}};
+        }{}%
         \node[anchor=north east,xshift=-0.42cm,yshift=-0.12cm]
         at (current page.north east) {\TemplateLogo};
     \end{tikzpicture}%
