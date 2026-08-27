@@ -1,7 +1,8 @@
 \begin{frame}{Whole CATRA Architecture}
 
 \begin{center}
-\begin{tikzpicture}[node distance=0.70cm]
+\resizebox{!}{0.67\textheight}{%
+\begin{tikzpicture}[node distance=0.52cm]
     \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.6cm,align=center,minimum height=0.75cm] (phy) {PHY / MAC observation};
     \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.6cm,align=center,minimum height=0.75cm,below=of phy] (active) {Active time estimation};
     \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.6cm,align=center,minimum height=0.75cm,below=of active] (util) {Channel utilization};
@@ -21,5 +22,6 @@
     \draw[-{Latex[length=2.5mm]},draw=ConclusionColor,line width=0.8pt] (cw) -- (catra);
     \draw[-{Latex[length=2.5mm]},draw=ConclusionColor,line width=0.8pt] (tcp) -- (catra);
 \end{tikzpicture}
+}
 \end{center}
 \end{frame}

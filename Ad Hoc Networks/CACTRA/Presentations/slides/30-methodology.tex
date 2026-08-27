@@ -5,11 +5,11 @@
 \vspace{0.35cm}
 
 \begin{center}
-\begin{tikzpicture}[node distance=0.7cm]
-    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3cm,align=center,minimum height=0.85cm] (sense) {Observe MAC/PHY activity};
-    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3cm,align=center,minimum height=0.85cm,right=0.65cm of sense] (util) {Estimate channel utilization};
-    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3cm,align=center,minimum height=0.85cm,right=0.65cm of util] (cw) {Adjust CW};
-    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=3cm,align=center,minimum height=0.85cm,right=0.65cm of cw] (tcp) {Adapt TCP rate};
+\begin{tikzpicture}[node distance=0.45cm,font=\small]
+    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=2.55cm,align=center,minimum height=0.78cm] (sense) {Observe MAC/PHY activity};
+    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=2.55cm,align=center,minimum height=0.78cm,right=0.45cm of sense] (util) {Estimate channel utilization};
+    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=2.25cm,align=center,minimum height=0.78cm,right=0.45cm of util] (cw) {Adjust CW};
+    \node[draw=MethodColor,rounded corners,fill=CardBg,text width=2.45cm,align=center,minimum height=0.78cm,right=0.45cm of cw] (tcp) {Adapt TCP rate};
     \draw[-{Latex[length=2.5mm]},draw=MethodColor,line width=0.8pt] (sense) -- (util);
     \draw[-{Latex[length=2.5mm]},draw=MethodColor,line width=0.8pt] (util) -- (cw);
     \draw[-{Latex[length=2.5mm]},draw=MethodColor,line width=0.8pt] (cw) -- (tcp);

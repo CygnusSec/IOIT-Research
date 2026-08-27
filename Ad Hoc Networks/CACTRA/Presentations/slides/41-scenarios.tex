@@ -1,7 +1,9 @@
 \begin{frame}{Evaluation Scenarios}
 
 \begin{center}
-\begin{tabular}{p{0.22\textwidth} p{0.56\textwidth} p{0.16\textwidth}}
+\small
+\renewcommand{\arraystretch}{1.10}
+\begin{tabular}{>{\RaggedRight\arraybackslash}p{0.21\textwidth} >{\RaggedRight\arraybackslash}p{0.53\textwidth} >{\RaggedRight\arraybackslash}p{0.17\textwidth}}
 \toprule
 \textbf{Scenario} & \textbf{Purpose} & \textbf{Metric focus} \\
 \midrule
@@ -12,5 +14,6 @@ TCP vs. UDP & Evaluate protocol-level contention asymmetry & TCP/UDP throughput 
 Random topology & Evaluate many-flow behavior in random deployment & Jain fairness \\
 \bottomrule
 \end{tabular}
+\renewcommand{\arraystretch}{1}
 \end{center}
 \end{frame}

@@ -6,6 +6,8 @@
 \usepackage{tikz}
 \usepackage{amsmath}
 \usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{array}
 
 \usetikzlibrary{
     positioning,
@@ -45,8 +47,9 @@
     \setmainfont{Latin Modern Roman}
 }
 
-\usepackage{etoolbox}
-
-\AtBeginEnvironment{frame}{%
-    \fontsize{18}{22}\selectfont
-}
+% Beamer's 11 pt body text maps visually to roughly 20-22 pt on a
+% PowerPoint Widescreen canvas. Components may opt into smaller text.
+\setbeamerfont{normal text}{size=\normalsize}
+\setbeamerfont{itemize/enumerate body}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subbody}{size=\small}
+\setlength{\emergencystretch}{1.5em}

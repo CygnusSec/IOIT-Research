@@ -17,12 +17,12 @@
 \centering
 \vspace{0.5cm}
 \begin{tikzpicture}[
-    box/.style={draw=MethodColor,rounded corners=3pt,minimum width=2.5cm,minimum height=0.75cm},
+    box/.style={draw=MethodColor,rounded corners=3pt,minimum width=1.55cm,minimum height=0.72cm,font=\small},
     arr/.style={->,draw=MethodColor,line width=0.8pt}
 ]
     \node[box] (input) at (0,0) {Input};
-    \node[box] (process) at (3.2,0) {Process};
-    \node[box] (output) at (6.4,0) {Output};
+    \node[box] (process) at (2.0,0) {Process};
+    \node[box] (output) at (4.0,0) {Output};
     \draw[arr] (input) -- (process);
     \draw[arr] (process) -- (output);
 \end{tikzpicture}
