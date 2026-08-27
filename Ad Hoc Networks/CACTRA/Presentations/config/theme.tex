@@ -32,12 +32,11 @@
 
 \newcommand{\LogoMark}{%
     \IfFileExists{images/logo.png}{%
-        \vbox{%
-            \hbox to 3.25cm{\hfil\includegraphics[width=3.25cm,height=0.74cm,keepaspectratio]{images/logo.png}\hfil}%
-            \vskip 1pt
-            \hbox to 3.25cm{\hfil{\color{TitleColor}\fontsize{5.2}{6}\selectfont\bfseries Institute of Information}\hfil}%
-            \hbox to 3.25cm{\hfil{\color{TitleColor}\fontsize{5.2}{6}\selectfont\bfseries Technology}\hfil}%
-        }%
+        \begin{tikzpicture}[inner sep=0pt]
+            \node (logo) {\includegraphics[width=3.55cm,height=0.82cm,keepaspectratio]{images/logo.png}};
+            \node[below=1pt of logo,text=TitleColor,font=\fontsize{6.5}{7.2}\selectfont\bfseries,align=center]
+            {Institute of\\Information Technology};
+        \end{tikzpicture}%
     }{%
         \begin{tikzpicture}
             \node[draw=LineColor,rounded corners=2pt,inner xsep=6pt,inner ysep=3pt,
