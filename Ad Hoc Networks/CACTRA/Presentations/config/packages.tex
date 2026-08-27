@@ -1,0 +1,52 @@
+% =========================================================
+% Packages
+% =========================================================
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\usetikzlibrary{
+    positioning,
+    arrows.meta,
+    shapes.geometric,
+    calc,
+    fit
+}
+
+% =========================================================
+% Base theme
+% =========================================================
+\usetheme{default}
+\usefonttheme{professionalfonts}
+
+\setbeamertemplate{navigation symbols}{}
+
+% =========================================================
+% Fonts
+% =========================================================
+
+% Sans-serif font used by Beamer
+\IfFontExistsTF{Arial}{
+    \setsansfont{Arial}
+}{
+    \IfFontExistsTF{TeX Gyre Heros}{
+        \setsansfont{TeX Gyre Heros}
+    }{
+        \setsansfont{Latin Modern Sans}
+    }
+}
+
+% Serif font
+\IfFontExistsTF{Times New Roman}{
+    \setmainfont{Times New Roman}
+}{
+    \setmainfont{Latin Modern Roman}
+}
+
+\usepackage{etoolbox}
+
+\AtBeginEnvironment{frame}{%
+    \fontsize{18}{22}\selectfont
+}

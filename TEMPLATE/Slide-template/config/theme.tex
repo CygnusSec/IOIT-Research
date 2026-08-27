@@ -1,0 +1,114 @@
+% =========================================================
+% Frame Accent System
+% =========================================================
+\newcommand{\FrameAccent}{TitleColor}
+
+\newcommand{\setframeaccent}[1]{%
+    \renewcommand{\FrameAccent}{#1}%
+    \setbeamercolor{frametitle}{fg=#1,bg=Background}%
+    \setbeamercolor{structure}{fg=#1}%
+    \setbeamercolor{itemize item}{fg=#1}%
+    \setbeamercolor{itemize subitem}{fg=#1}%
+    \setbeamercolor{enumerate item}{fg=#1}%
+    \setbeamercolor{enumerate subitem}{fg=#1}%
+}
+
+% Semantic slide styles
+\newcommand{\DefaultStyle}{\setframeaccent{TitleColor}}
+\newcommand{\ResearchStyle}{\setframeaccent{ResearchColor}}
+\newcommand{\MethodStyle}{\setframeaccent{MethodColor}}
+\newcommand{\ResultStyle}{\setframeaccent{ResultColor}}
+\newcommand{\ConclusionStyle}{\setframeaccent{ConclusionColor}}
+
+\DefaultStyle
+
+% =========================================================
+% Logo
+% =========================================================
+\newcommand{\TemplateLogo}{%
+    \IfFileExists{images/logo.png}{%
+        \includegraphics[width=4cm,height=1.2cm,keepaspectratio]{images/logo.png}%
+    }{%
+        \begin{tikzpicture}
+            \node[
+                draw=LineColor,
+                rounded corners=2pt,
+                text=SecondaryColor,
+                font=\scriptsize,
+                minimum width=2.2cm,
+                minimum height=0.55cm
+            ]{LOGO};
+        \end{tikzpicture}%
+    }%
+}
+
+\setbeamertemplate{background}{%
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[
+            anchor=north east,
+            xshift=-0.40cm,
+            yshift=-0.10cm
+        ] at (current page.north east) {\TemplateLogo};
+    \end{tikzpicture}%
+}
+
+% =========================================================
+% Frame Title
+% =========================================================
+\setbeamertemplate{frametitle}{%
+    \vspace{0.30cm}
+    \hspace{0.15cm}%
+    \begin{minipage}[t]{0.70\paperwidth}
+        \usebeamercolor[fg]{frametitle}%
+        \fontsize{17}{21}\selectfont
+        \bfseries
+        \insertframetitle
+    \end{minipage}
+
+    \vspace{0.10cm}
+
+    \hspace{0.15cm}%
+    \begin{tikzpicture}
+        \draw[draw=\FrameAccent,line width=0.65pt]
+        (0,0) -- (10.8,0);
+    \end{tikzpicture}
+
+    \vspace{0.05cm}
+}
+
+% =========================================================
+% Footer
+% =========================================================
+\setbeamertemplate{footline}{%
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[
+            wd=.84\paperwidth,
+            ht=2.7ex,
+            dp=1.2ex,
+            left
+        ]{author in head/foot}%
+            \hspace{0.45cm}%
+            \color{SecondaryColor}%
+            \fontsize{7.5}{9}\selectfont
+            Institute of Information Technology -- VAST
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[
+            wd=.16\paperwidth,
+            ht=2.7ex,
+            dp=1.2ex,
+            right
+        ]{date in head/foot}%
+            \color{SecondaryColor}%
+            \fontsize{7.5}{9}\selectfont
+            \insertframenumber\hspace{0.45cm}
+        \end{beamercolorbox}%
+    }%
+}
+
+% =========================================================
+% Lists
+% =========================================================
+\setbeamertemplate{itemize item}{\raise0.2ex\hbox{\small$\bullet$}}
+\setbeamertemplate{itemize subitem}{\raise0.2ex\hbox{\scriptsize$\bullet$}}
+\setlength{\leftmargini}{1.4em}
