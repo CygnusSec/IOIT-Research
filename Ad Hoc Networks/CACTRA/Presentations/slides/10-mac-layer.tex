@@ -1,0 +1,54 @@
+\begin{frame}[shrink=3]{IEEE 802.11 MAC: Distributed Channel Access}
+
+\KeyPoint{DCF uses carrier sensing, random backoff, and acknowledgements to coordinate access without centralized scheduling.}
+
+\vspace{0.05cm}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=0.52cm,
+    macstep/.style={
+        draw=ResearchColor,
+        rounded corners=3pt,
+        fill=CardBg,
+        minimum width=2.25cm,
+        minimum height=0.78cm,
+        align=center,
+        font=\fontsize{8}{9.5}\selectfont\bfseries
+    },
+    flow/.style={-{Latex[length=2.2mm]},draw=ResearchColor,line width=0.75pt}
+]
+    \node[macstep] (sense) {Sense the\\channel};
+    \node[macstep,right=of sense] (wait) {Wait for\\DIFS};
+    \node[macstep,right=of wait] (backoff) {Random\\backoff};
+    \node[macstep,right=of backoff] (send) {Transmit\\frame};
+    \node[macstep,right=of send] (ack) {Receive\\ACK};
+
+    \draw[flow] (sense) -- (wait);
+    \draw[flow] (wait) -- (backoff);
+    \draw[flow] (backoff) -- (send);
+    \draw[flow] (send) -- (ack);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.12cm}
+
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\fontsize{9}{10.8}\selectfont
+\textbf{CSMA/CA and backoff}
+\begin{itemize}
+    \item A station selects a random counter from its contention window (CW).
+    \item The counter decreases in idle slots and freezes whenever the channel becomes busy.
+\end{itemize}
+
+\column{0.48\textwidth}
+\fontsize{9}{10.8}\selectfont
+\textbf{When contention increases}
+\begin{itemize}
+    \item The receiver returns an ACK after SIFS; a missing ACK indicates loss or collision.
+    \item Binary Exponential Backoff enlarges CW before retransmission.
+\end{itemize}
+\end{columns}
+
+\end{frame}
