@@ -1,20 +1,29 @@
 \ResearchStyle
 \PartDivider{PART III}{Related Work}{Compare MAC-only, TCP-only, and earlier cross-layer approaches.}
 
-\begin{frame}[shrink=3]{Related Work Map}
+\begin{frame}{Related Work Map}
+\small
 \begin{center}
-\begin{tikzpicture}[node distance=0.8cm]
+\resizebox{0.96\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.6cm]
 \node[draw=ResearchColor,rounded corners,fill=CardBg,text width=3.2cm,align=center] (root) {Prior fairness approaches};
-\node[draw=ResearchColor,rounded corners,fill=CardBg,text width=2.8cm,align=center,below left=1.0cm and 2.5cm of root] (mac) {MAC-only\\EIFS, backoff, CW};
-\node[draw=ResearchColor,rounded corners,fill=CardBg,text width=2.8cm,align=center,below=1.0cm of root] (tcp) {TCP/network\\NRED, cwnd limit};
-\node[draw=ResearchColor,rounded corners,fill=CardBg,text width=2.8cm,align=center,below right=1.0cm and 2.5cm of root] (cross) {Cross-layer\\MAC signals to TCP};
+\node[draw=ResearchColor,rounded corners,fill=CardBg,text width=2.8cm,align=center,below left=0.75cm and 2.5cm of root] (mac) {MAC-only\\EIFS, backoff, CW};
+\node[draw=ResearchColor,rounded corners,fill=CardBg,text width=2.8cm,align=center,below=0.75cm of root] (tcp) {TCP/network\\NRED, cwnd limit};
+\node[draw=ResearchColor,rounded corners,fill=CardBg,text width=2.8cm,align=center,below right=0.75cm and 2.5cm of root] (cross) {Cross-layer\\MAC signals to TCP};
 \draw[-{Latex[length=2mm]}] (root)--(mac);
 \draw[-{Latex[length=2mm]}] (root)--(tcp);
 \draw[-{Latex[length=2mm]}] (root)--(cross);
 \end{tikzpicture}
+}
 \end{center}
-\vspace{0.45cm}
-\KeyPoint{The paper's claim is not that these methods are ineffective, but that none jointly controls station access and per-flow TCP demand in its target setting.}
+\vspace{0.05cm}
+\begin{center}
+\begin{tikzpicture}
+\node[draw=ResearchColor,rounded corners=4pt,fill=CardBg,text width=0.70\paperwidth,
+align=center,inner xsep=8pt,inner ysep=6pt,font=\fontsize{9.5}{11.5}\selectfont\bfseries]
+{None of these methods jointly controls station access and per-flow TCP demand in CATRA's target setting.};
+\end{tikzpicture}
+\end{center}
 \end{frame}
 
 \begin{frame}{MAC Work: EIFS and Fair Backoff}
@@ -77,12 +86,12 @@
 \end{frame}
 
 \begin{frame}{Related Work Comparison}
-\begin{tabular}{p{2.2cm}p{3.4cm}p{5.3cm}}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{5.1cm}}
 \toprule
 \textbf{Category} & \textbf{Control} & \textbf{Gap identified by CATRA} \\
 \midrule
 MAC-only & EIFS, backoff, CW & Target depends on topology or evaluation is single-hop. \\
-TCP/network & Drop policy, cwnd/rate & Wireless MAC contention remains untreated. \\
+TCP / network & Drop policy, cwnd/rate & Wireless MAC contention remains untreated. \\
 Cross-layer & MAC information $\rightarrow$ TCP & Intermediate-node efficiency or MAC unfairness remains unresolved. \\
 CATRA & CW + TCP delay/cwnd & Joint station-level and flow-level feedback. \\
 \bottomrule

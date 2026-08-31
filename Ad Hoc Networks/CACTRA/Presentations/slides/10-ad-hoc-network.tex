@@ -1,8 +1,11 @@
-\begin{frame}[shrink=4]{Multi-Hop 802.11 Ad Hoc Networks}
+\begin{frame}{Multi-Hop 802.11 Ad Hoc Networks}
+\small
 
-\KeyPoint{In ad hoc mode, stations communicate without an access point and relay packets over multiple wireless hops.}
+\begin{center}
+\textbf{Stations communicate without an access point and relay packets over multiple wireless hops.}
+\end{center}
 
-\vspace{0.18cm}
+\vspace{0.05cm}
 
 \begin{columns}[T,onlytextwidth]
 \column{0.55\textwidth}
@@ -24,23 +27,22 @@
     \draw[route] ([yshift=-0.18cm]b.east) -- ([yshift=-0.18cm]c.west);
     \draw[route] ([yshift=-0.18cm]c.east) -- ([yshift=-0.18cm]d.west);
 
-    \node[font=\fontsize{8}{9}\selectfont,text=SecondaryColor,align=center] at (2.48,-0.95)
+    \node[font=\fontsize{9}{10.5}\selectfont,text=SecondaryColor,align=center] at (2.48,-0.95)
     {One end-to-end packet requires\\three channel-access events};
 \end{tikzpicture}
 \end{center}
 
 \column{0.41\textwidth}
-\fontsize{9}{10.8}\selectfont
 \textbf{Key characteristics}
 \begin{itemize}
-    \item No centralized scheduler or fixed infrastructure.
-    \item Nodes act as both end hosts and packet forwarders.
-    \item Every hop consumes airtime in a shared broadcast medium.
-    \item Neighboring hops cannot always transmit simultaneously.
+    \item No centralized scheduler.
+    \item Nodes are hosts and forwarders.
+    \item Every hop consumes shared airtime.
+    \item Neighboring hops may not transmit together.
 \end{itemize}
 \end{columns}
 
-\vspace{0.12cm}
+\vspace{0.02cm}
 \SmallNote{\textbf{Implication:} End-to-end throughput depends on route length and local contention around every forwarding node.}
 
 \end{frame}

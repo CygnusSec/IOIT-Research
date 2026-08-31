@@ -3,7 +3,8 @@
 
 \input{slides/10-ad-hoc-network}
 
-\begin{frame}[shrink=3]{Single-Hop vs. Multi-Hop Communication}
+\begin{frame}{Single-Hop vs. Multi-Hop Communication}
+\small
 \begin{columns}[T,onlytextwidth]
 \column{0.45\textwidth}
 \textbf{Single-hop}
@@ -37,7 +38,7 @@
 \item Neighboring hops contend and often cannot transmit together.
 \end{itemize}
 \end{columns}
-\vspace{0.35cm}
+\vspace{0.08cm}
 \KeyPoint{Route length affects airtime consumption, contention, and end-to-end throughput.}
 \end{frame}
 
@@ -74,8 +75,11 @@
 
 \input{slides/10-mac-layer}
 
-\begin{frame}[shrink=5]{Contention Window and Expected Backoff}
-\KeyPoint{A station draws an integer backoff counter from its current contention window.}
+\begin{frame}{Contention Window and Expected Backoff}
+\small
+\begin{center}
+\textbf{A station draws an integer backoff counter from its current contention window.}
+\end{center}
 \[
 N\sim U\{0,\ldots,CW\},\qquad
 E[T_{backoff}]\approx \frac{CW}{2}\,SlotTime
@@ -96,8 +100,10 @@ E[T_{backoff}]\approx \frac{CW}{2}\,SlotTime
 \item More room for competing stations.
 \end{itemize}
 \end{columns}
-\vspace{0.25cm}
-\KeyPoint{CATRA changes CW deliberately to control each station's channel-access opportunity.}
+\vspace{0.02cm}
+\begin{center}
+\textbf{CATRA changes CW deliberately to control each station's channel-access opportunity.}
+\end{center}
 \end{frame}
 
 \begin{frame}{Binary Exponential Backoff}
@@ -123,10 +129,10 @@ E[T_{backoff}]\approx \frac{CW}{2}\,SlotTime
 
 \begin{frame}{802.11 Timing Used by CATRA}
 \begin{center}
-\begin{tikzpicture}[x=1.0cm,y=1cm]
-\draw[-{Latex[length=2mm]},draw=SecondaryColor] (0,0)--(12.3,0);
-\foreach \x/\w/\label/\c in {0.2/1.2/DIFS/ResearchColor,1.4/2.0/Backoff/ResearchColor,3.4/1.1/RTS/WarningColor,4.5/0.7/SIFS/ResearchColor,5.2/1.1/CTS/WarningColor,6.3/0.7/SIFS/ResearchColor,7.0/2.4/TCP DATA/TitleColor,9.4/0.7/SIFS/ResearchColor,10.1/1.2/MAC ACK/WarningColor}
-{\fill[\c!18] (\x,0.12) rectangle +(\w,0.62);\draw[\c] (\x,0.12) rectangle +(\w,0.62);\node[font=\fontsize{7}{8}\selectfont] at (\x+\w/2,0.43) {\label};}
+\begin{tikzpicture}[x=0.85cm,y=1cm]
+\draw[-{Latex[length=2mm]},draw=SecondaryColor] (0,0)--(14.0,0);
+\foreach \x/\w/\label/\c in {0.2/1.2/DIFS/ResearchColor,1.4/2.0/Backoff/ResearchColor,3.4/1.1/RTS/WarningColor,4.5/1.0/SIFS/ResearchColor,5.5/1.1/CTS/WarningColor,6.6/1.0/SIFS/ResearchColor,7.6/2.4/TCP DATA/TitleColor,10.0/1.2/SIFS/ResearchColor,11.2/2.0/MAC ACK/WarningColor}
+{\fill[\c!18] (\x,0.12) rectangle +(\w,0.62);\draw[\c] (\x,0.12) rectangle +(\w,0.62);\node[font=\fontsize{9}{10.5}\selectfont] at (\x+\w/2,0.43) {\label};}
 \end{tikzpicture}
 \end{center}
 \vspace{0.45cm}
@@ -139,6 +145,7 @@ E[T_{backoff}]\approx \frac{CW}{2}\,SlotTime
 
 \input{slides/10-wireless-contention}
 \input{slides/10-transport-layer}
+\input{slides/10-tcp-congestion-window}
 \input{slides/10-tcp-tahoe}
 
 \begin{frame}{Station Fairness vs. Flow Fairness}

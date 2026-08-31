@@ -22,7 +22,8 @@
 \KeyPoint{Part B controls the demand created by each TCP flow after Part A controls station access.}
 \end{frame}
 
-\begin{frame}[shrink=2]{Fair and Real Bandwidth Ratios for a Flow}
+\begin{frame}{Fair and Real Bandwidth Ratios for a Flow}
+\small
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
 \textbf{Fair share}
@@ -43,7 +44,7 @@
 \item Measured during the Estimation Period.
 \end{itemize}
 \end{columns}
-\vspace{0.3cm}
+\vspace{0.05cm}
 \KeyPoint{The ratio $RBR_f/FBR_f$ is the feedback signal for TCP rate adaptation.}
 \end{frame}
 
@@ -160,7 +161,7 @@ and because $T_f=3\,win\,T_f^{tr}$,
 \column{0.57\textwidth}
 \begin{tikzpicture}[
 node distance=0.31cm,
-box/.style={draw=MethodColor,rounded corners,fill=CardBg,text width=6.3cm,align=left,inner xsep=7pt,inner ysep=5pt,font=\fontsize{8.5}{10}\selectfont},
+box/.style={draw=MethodColor,rounded corners,fill=CardBg,text width=6.3cm,align=left,inner xsep=7pt,inner ysep=5pt,font=\fontsize{9}{10.5}\selectfont},
 flow/.style={-{Latex[length=2mm]},draw=MethodColor}
 ]
 \node[box] (ack) {For each newly received TCP ACK, compute $\rho_f=RBR_f/FBR_f$.};
@@ -179,6 +180,6 @@ flow/.style={-{Latex[length=2mm]},draw=MethodColor}
 \item \textbf{Near target:} preserve native TCP behavior.
 \end{itemize}
 \vspace{0.2cm}
-\SmallNote{Original evaluation parameters: $High_{th}=1.05$, $Low_{th}=0.7$, $EP=2$ s.}
+\SmallNote{Parameters: $High_{th}=1.05$, $Low_{th}=0.7$, $EP=2$ s.}
 \end{columns}
 \end{frame}
