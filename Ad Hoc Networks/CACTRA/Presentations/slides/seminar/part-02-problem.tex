@@ -23,50 +23,46 @@
 \end{frame}
 
 \begin{frame}{Problem 1: MAC-Layer Unfairness}
+\PaperClaim{BEB may be unfair in multi-hop ad hoc networks: CW is chosen mainly from congestion conditions.}
 \begin{center}
-\resizebox{0.96\textwidth}{!}{%
-\begin{tikzpicture}[node distance=0.62cm]
-\node[draw=ResearchColor,rounded corners,fill=CardBg] (beb) {BEB chooses CW};
-\node[draw=ResearchColor,rounded corners,fill=CardBg,right=of beb] (state) {Uses contention state};
-\node[draw=WarningColor,rounded corners,fill=CardBg,right=of state] (blind) {No flow awareness};
-\node[draw=WarningColor,rounded corners,fill=CardBg,right=of blind] (unfair) {Unequal opportunities};
+\begin{tikzpicture}[node distance=0.42cm,
+flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.65cm,minimum height=0.9cm,align=center}]
+\node[flowbox] (beb) {IEEE 802.11 BEB};
+\node[flowbox,right=of beb] (state) {CW follows congestion conditions};
+\node[flowbox,right=of state] (missing) {Neighbor and higher-layer conditions are not considered};
+\node[flowbox,draw=WarningColor,right=of missing] (unfair) {CW may be unsuitable for fairness};
 \draw[-{Latex[length=2mm]}] (beb)--(state);
-\draw[-{Latex[length=2mm]}] (state)--(blind);
-\draw[-{Latex[length=2mm]}] (blind)--(unfair);
+\draw[-{Latex[length=2mm]}] (state)--(missing);
+\draw[-{Latex[length=2mm]},draw=WarningColor] (missing)--(unfair);
 \end{tikzpicture}
-}
 \end{center}
-\vspace{0.5cm}
+\vspace{0.15cm}
 \begin{itemize}
-\item BEB appears symmetric but multi-hop contention domains are asymmetric.
-\item A forwarding station may compete with different sets of neighbors on each side.
-\item The standard backoff rule does not explicitly represent how many flows a station must carry.
-\item A disadvantaged station can repeatedly lose access even when it forwards critical traffic.
+\item BEB appears to give contending stations the same channel-access opportunity.
+\item It does not account for the number of flows in the channel or users in the system.
+\item Consequently, disadvantaged stations may have difficulty accessing the channel.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Problem 2: TCP-Layer Unfairness}
+\PaperClaim{An excessively large TCP congestion window creates too many packets competing for the shared medium.}
 \begin{center}
-\resizebox{0.96\textwidth}{!}{%
-\begin{tikzpicture}[node distance=0.58cm]
-\node[draw=ResearchColor,rounded corners,fill=CardBg] (grow) {$cwnd$ grows};
-\node[draw=ResearchColor,rounded corners,fill=CardBg,right=of grow] (packets) {More packets};
-\node[draw=WarningColor,rounded corners,fill=CardBg,right=of packets] (relay) {Relay queues};
-\node[draw=WarningColor,rounded corners,fill=CardBg,right=of relay] (cont) {More contention};
-\node[draw=WarningColor,rounded corners,fill=CardBg,right=of cont] (fair) {Fairness loss};
+\begin{tikzpicture}[node distance=0.48cm,
+flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.6cm,minimum height=0.85cm,align=center}]
+\node[flowbox] (grow) {TCP AIMD grows $cwnd$};
+\node[flowbox,right=of grow] (packets) {Too many packets compete};
+\node[flowbox,draw=WarningColor,right=of packets] (cont) {Network congestion increases};
+\node[flowbox,draw=WarningColor,right=of cont] (fair) {Throughput and fairness degrade};
 \draw[-{Latex[length=2mm]}] (grow)--(packets);
-\draw[-{Latex[length=2mm]}] (packets)--(relay);
-\draw[-{Latex[length=2mm]}] (relay)--(cont);
+\draw[-{Latex[length=2mm]},draw=WarningColor] (packets)--(cont);
 \draw[-{Latex[length=2mm]}] (cont)--(fair);
 \end{tikzpicture}
-}
 \end{center}
-\vspace{0.45cm}
+\vspace{0.18cm}
 \begin{itemize}
-\item Conventional TCP controls an end-to-end path but does not directly observe local wireless contention.
-\item A large window creates many competing packets at intermediate relays.
-\item Different paths and start times can produce unequal ACK clocks and unequal window growth.
-\item Transport behavior that is valid on wired paths can overload a shared multi-hop medium.
+\item TCP performance in a multi-hop wireless network depends critically on $cwnd$.
+\item The paper observes that some flows receive very large bandwidth while others receive little bandwidth.
+\item Conventional TCP rate control can therefore produce unfair bandwidth sharing among flows.
 \end{itemize}
 \end{frame}
 
