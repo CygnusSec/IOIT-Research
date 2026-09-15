@@ -49,7 +49,7 @@ flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.65cm
 \begin{center}
 \begin{tikzpicture}[node distance=0.48cm,
 flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.6cm,minimum height=0.85cm,align=center}]
-\node[flowbox] (grow) {TCP AIMD grows $cwnd$};
+\node[flowbox] (grow) {TCP $cwnd$ grows too large};
 \node[flowbox,right=of grow] (packets) {Too many packets compete};
 \node[flowbox,draw=WarningColor,right=of packets] (cont) {Network congestion increases};
 \node[flowbox,draw=WarningColor,right=of cont] (fair) {Throughput and fairness degrade};
