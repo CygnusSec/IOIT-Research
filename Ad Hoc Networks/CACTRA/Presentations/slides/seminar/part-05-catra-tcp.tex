@@ -2,27 +2,26 @@
 \PartDivider{PART V}{CATRA Part B: TCP Rate Adaptation}{Use MAC/PHY utilization to regulate per-flow transport demand.}
 
 \begin{frame}{Why MAC Fairness Is Not Enough}
-\begin{columns}[T,onlytextwidth]
-\column{0.46\textwidth}
 \begin{center}
-\begin{tikzpicture}[node distance=0.35cm]
-\node[draw=MethodColor,rounded corners,fill=CardBg,text width=4.5cm,align=center] (a) {Station A\\Flow 1 + Flow 2 + Flow 3};
-\node[draw=MethodColor,rounded corners,fill=CardBg,text width=4.5cm,align=center,below=of a] (b) {Station B\\Flow 4};
+\begin{tikzpicture}[node distance=1.0cm]
+\node[draw=MethodColor,circle,fill=CardBg] (s2) {S2};
+\node[draw=MethodColor,circle,fill=CardBg,right=of s2] (s1) {S1};
+\node[draw=MethodColor,circle,fill=CardBg,right=of s1] (r) {R};
+\draw[-{Latex[length=2mm]},draw=MethodColor] (s2)--node[above,font=\fontsize{9}{10.5}\selectfont]{Flow 2}(s1);
+\draw[-{Latex[length=2mm]},draw=MethodColor] (s1)--node[above,font=\fontsize{9}{10.5}\selectfont]{Flows 1 + 2}(r);
 \end{tikzpicture}
 \end{center}
-\column{0.50\textwidth}
+\vspace{0.25cm}
 \begin{itemize}
-\item Equal station bandwidth gives A and B the same aggregate share.
-\item A must divide its share across three flows; B carries one.
-\item Flow throughput is therefore unequal even when station access is equal.
-\item CATRA adds a per-flow transport controller.
+\item Channel access control can improve the Fair Bandwidth Ratio between stations.
+\item It does not necessarily ensure fair throughput for each TCP flow.
+\item CATRA therefore controls TCP sending rate to achieve per-flow fairness.
 \end{itemize}
-\end{columns}
 \vspace{0.35cm}
-\KeyPoint{Part B controls the demand created by each TCP flow after Part A controls station access.}
+\KeyPoint{Part A improves station access; Part B controls TCP sending rate for fair throughput among flows.}
 \end{frame}
 
-\begin{frame}{Fair and Real Bandwidth Ratios for a Flow}
+\begin{frame}{Flow-Level Bandwidth Ratios}
 \small
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
@@ -31,8 +30,8 @@
 \boxed{FBR_f=\frac{1}{n_{total}}}
 \]
 \begin{itemize}
-\item Equal share for every competing flow.
-\item Uses the same local $n_{total}$ model as Part A.
+\item Equal share using the same local $n_{total}$ model as Part A.
+\item Same-source/destination TCP traffic is treated as one flow.
 \end{itemize}
 \column{0.48\textwidth}
 \textbf{Real share}
@@ -44,8 +43,8 @@
 \item Measured during the Estimation Period.
 \end{itemize}
 \end{columns}
-\vspace{0.05cm}
-\KeyPoint{The ratio $RBR_f/FBR_f$ is the feedback signal for TCP rate adaptation.}
+\vspace{0cm}
+\KeyPoint{Algorithm 2 compares $RBR_f/FBR_f$ with $High_{th}$ and $Low_{th}$ to select the TCP rate adjustment.}
 \end{frame}
 
 \begin{frame}{Current TCP Sending Demand}
@@ -65,7 +64,7 @@ $win$ & Packets currently ready to be transmitted.\\
 \end{tabular}
 \end{frame}
 
-\begin{frame}{Average Transmission Time per Flow Packet}
+\begin{frame}{Per-Flow Packet Transmission Time}
 \PaperClaim{MAC observation supplies both active time and the number of transmitted packets for flow $f$.}
 \[
 \boxed{T_f^{tr}=\frac{T_f^{Active}}{N_f}}
@@ -74,14 +73,12 @@ $win$ & Packets currently ready to be transmitted.\\
 \column{0.48\textwidth}
 \textbf{$T_f^{Active}$}
 \begin{itemize}
-\item Smoothed airtime attributed to flow $f$.
-\item Includes relevant TCP DATA/ACK activity.
+\item Average time for transmitting packets of TCP flow $f$ during $EP$.
 \end{itemize}
 \column{0.48\textwidth}
 \textbf{$N_f$}
 \begin{itemize}
-\item Number of flow-$f$ packets transmitted during $EP$.
-\item Converts aggregate airtime into a per-packet estimate.
+\item Number of packets from TCP flow $f$ transmitted during $EP$.
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -107,7 +104,7 @@ $win$ & Packets currently ready to be transmitted.\\
 \end{frame}
 
 \begin{frame}{Rate-Control Delay}
-\PaperClaim{An over-allocated flow is slowed by delaying generation of the next packets.}
+\PaperClaim{CATRA slows an over-allocated flow by delaying new packet generation.}
 \[
 \boxed{\Delta_f=\frac{RBR_f}{FBR_f}T_f}
 \]
@@ -127,33 +124,39 @@ $win$ & Packets currently ready to be transmitted.\\
 \vspace{0.4cm}
 \begin{itemize}
 \item The delay is applied before generating new packets after the current $win$ packets complete transmission.
-\item CATRA also changes $cwnd$ slightly, providing a second transport-layer actuator.
+\item Algorithm 2 also decreases $cwnd$ when the flow is over-allocated and increases it when the flow is under-allocated.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Worked Example: Flow 1 at S1}
 \begin{columns}[T,onlytextwidth]
-\column{0.48\textwidth}
-\textbf{Given by the paper}
+\column{0.46\textwidth}
+\textbf{Initial bandwidth ratio}
 \[
 n_{total}=3,\qquad FBR_f=\frac13
 \]
 \[
 RBR_f=\frac12>FBR_f
 \]
-The flow is receiving more than its fair channel share.
-\column{0.48\textwidth}
-\textbf{Control calculation}
+\column{0.50\textwidth}
+\textbf{Applied delay}
 \[
 \Delta_f=\frac{1/2}{1/3}T_f=\frac32T_f
 \]
-and because $T_f=3\,win\,T_f^{tr}$,
 \[
 \Delta_f=\frac92\,win\,T_f^{tr}.
 \]
 \end{columns}
-\vspace{0.3cm}
-\KeyPoint{Spacing Flow 1's packets creates channel opportunities for the neighboring forwarding flow.}
+\vspace{0.12cm}
+\begin{center}
+\[
+RBR'_f=\frac{2}{9},\qquad
+\frac12\left(RBR_f+RBR'_f\right)
+=\frac12\left(\frac12+\frac29\right)=\frac{13}{36}\approx\frac13=FBR_f
+\]
+\end{center}
+\vspace{-0.18cm}
+\KeyPoint{The delay moves Flow 1's average bandwidth ratio toward its fair share and gives neighboring flows more transmission opportunities.}
 \end{frame}
 
 \begin{frame}{Algorithm 2: TCP Rate Adaptation}

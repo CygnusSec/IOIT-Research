@@ -1,39 +1,27 @@
-\begin{frame}{Gap Identified from Related Work}
+\begin{frame}{Motivation for CATRA}
+\PaperClaim{A cross-layer scheme is needed to address both channel access and TCP sending-rate control.}
+\vspace{-0.18cm}
 \begin{center}
-\textbf{The reviewed approaches leave limitations when station and flow fairness are considered together.}
-\end{center}
-
-\begin{columns}[T,onlytextwidth]
-\column{0.32\textwidth}
-\textbf{MAC approaches}
-\begin{itemize}
-\item EIFS, back-off, and CW adaptation.
-\item Some need topology-dependent values; most per-flow CW studies are single-hop.
-\end{itemize}
-
-\column{0.32\textwidth}
-\textbf{TCP approaches}
-\begin{itemize}
-\item NRED and TCP window or rate adjustment.
-\item Primarily control TCP behavior.
-\end{itemize}
-
-\column{0.32\textwidth}
-\textbf{Cross-layer approaches}
-\begin{itemize}
-\item Use MAC information to adapt TCP.
-\item A cited method omits MAC contention and cannot exactly identify intermediate-node efficiency.
-\end{itemize}
-\end{columns}
-
-\vspace{-0.05cm}
-\begin{center}
-\begin{tikzpicture}[node distance=0.55cm]
-\node[draw=MethodColor,rounded corners,fill=CardBg,text width=4.2cm,align=center,inner ysep=3pt] (cw) {Suitable CW for each station};
-\node[draw=MethodColor,rounded corners,fill=CardBg,text width=4.2cm,align=center,inner ysep=3pt,right=of cw] (rate) {TCP sending rate for each flow};
-\node[draw=WarningColor,rounded corners,fill=CardBg,right=of rate] (catra) {CATRA};
-\draw[-{Latex[length=2.2mm]},draw=MethodColor] (cw)--(rate);
-\draw[-{Latex[length=2.2mm]},draw=MethodColor] (rate)--(catra);
+\begin{tikzpicture}[
+node distance=0.55cm and 1.05cm,
+problem/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=4.3cm,
+    minimum height=1.15cm,align=center},
+gap/.style={draw=WarningColor,rounded corners,fill=CardBg,text width=5.2cm,
+    minimum height=1.05cm,align=center,font=\bfseries}
+]
+\node[problem] (mac) {MAC-side problem\\Some stations cannot access the channel fairly};
+\node[problem,right=of mac] (tcp) {TCP-side problem\\Flows receive unequal bandwidth};
+\node[font=\bfseries] (plus) at ($(mac.east)!0.5!(tcp.west)$) {$+$};
+\node[gap,below=0.68cm of plus] (gap) {CATRA motivation\\Coordinate CW and TCP sending rate};
+\draw[-{Latex[length=2.4mm]},draw=WarningColor] (mac.south) -- (gap.north west);
+\draw[-{Latex[length=2.4mm]},draw=WarningColor] (tcp.south) -- (gap.north east);
 \end{tikzpicture}
 \end{center}
+
+\vspace{-0.04cm}
+\begin{itemize}
+\item Collect MAC/PHY information to adjust the CW size for disadvantaged stations.
+\item Use MAC/PHY information to adjust TCP sending rate dynamically.
+\item Target fairer bandwidth sharing among TCP flows.
+\end{itemize}
 \end{frame}

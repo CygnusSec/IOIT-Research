@@ -1,7 +1,7 @@
 \MethodStyle
 \PartDivider{PART IV}{CATRA Part A: Channel Access Control}{Turn local channel observations into station-level contention-window control.}
 
-\begin{frame}{CATRA: Two-Level Fairness Control}
+\begin{frame}{CATRA Structure}
 \begin{center}
 \resizebox{0.96\textwidth}{!}{%
 \begin{tikzpicture}[node distance=0.58cm]
@@ -24,7 +24,6 @@
 \begin{frame}{Ideal Fairness Assumption}
 \PaperClaim{In the saturated state, the paper defines ideal per-flow fairness as equal throughput for every flow.}
 \begin{itemize}
-\item This is a modeling assumption, not a universal definition of network fairness.
 \item A station that forwards two flows should receive more channel resource than a station carrying one flow.
 \item CATRA translates this flow count into a station-level Fair Bandwidth Ratio.
 \end{itemize}
@@ -68,6 +67,8 @@
 n_{total}=n_{TX}+n_{CS},\qquad
 n_{CS}=\begin{cases}0,&\text{no CS flow},\\1,&\text{one or more CS flows.}\end{cases}
 \]
+\vspace{-0.08cm}
+\SmallNote{TCP ACK is not counted as a competing flow. A flow is identified by source/destination MAC and IP addresses; hidden stations make exact $n_{total}$ estimation difficult.}
 \end{frame}
 
 \begin{frame}{Station Fair Bandwidth Ratio}
@@ -108,7 +109,7 @@ n_{CS}=\begin{cases}0,&\text{no CS flow},\\1,&\text{one or more CS flows.}\end{c
 \column{0.60\textwidth}
 \begin{tabular}{lccccc}
 \toprule
- & $n_S$ & $n_{TX}$ & $n_{CS}$ & $n_{total}$ & $FBR_S$\\
+ & $n_{SEND}$ & $n_{TX}$ & $n_{CS}$ & $n_{total}$ & $FBR_S$\\
 \midrule
 S1 & 2 & 3 & 0 & 3 & $2/3$\\
 S2 & 1 & 3 & 0 & 3 & $1/3$\\
@@ -133,17 +134,16 @@ R  & 0 & 2 & 1 & 3 & $0$\\
 \column{0.48\textwidth}
 \textbf{$T^{Active}$}
 \begin{itemize}
-\item Smoothed estimate of airtime used by the station.
+\item Average active transmission time of the station during each $EP$.
 \item Includes TCP DATA and TCP ACK transmission activity.
 \end{itemize}
 \column{0.48\textwidth}
 \textbf{$EP$}
 \begin{itemize}
-\item Fixed observation interval.
-\item Original evaluation later selects $EP=2$ s.
+\item Fixed observation interval; the evaluation uses $EP=2$ s.
 \end{itemize}
 \end{columns}
-\vspace{0.05cm}
+\vspace{-0.14cm}
 \KeyPoint{$FBR_S$ means SHOULD receive; $RBR_S$ means ACTUALLY receiving.}
 \end{frame}
 
@@ -166,8 +166,8 @@ R  & 0 & 2 & 1 & 3 & $0$\\
 \vspace{0.45cm}
 \begin{itemize}
 \item Initialize $T^{Active}=0$ and raw accumulator $t=0$.
-\item For each locally received packet, inspect MAC and TCP headers.
-\item Add the estimated transmission time for TCP DATA or TCP ACK.
+\item Sense packets destined to the local station and inspect their headers.
+\item Classify the corresponding TCP DATA/TCP ACK activity and add its estimated transmission time.
 \item At every $EP$, smooth the raw observation and reset $t$.
 \end{itemize}
 \end{frame}
@@ -182,7 +182,7 @@ T_p\approx 0.5\,CW\,ST+T_{RTS}+SIFS+T_{CTS}+SIFS+T_{TCP}+SIFS+T_{ACK}+DIFS
 \textbf{Term} & \textbf{Interpretation}\\
 \midrule
 $0.5\,CW\,ST$ & Expected random-backoff time using the current CW.\\
-$T_{RTS},T_{CTS}$ & Optional channel-reservation control frames.\\
+$T_{RTS},T_{CTS}$ & RTS/CTS transmission times; RTS/CTS is enabled in the paper's simulation setup.\\
 $SIFS,DIFS$ & Required inter-frame timing.\\
 $T_{TCP}$ & Airtime of the TCP DATA or TCP ACK frame.\\
 $T_{ACK}$ & Link-layer acknowledgement airtime.\\
@@ -208,9 +208,8 @@ $T_{ACK}$ & Link-layer acknowledgement airtime.\\
 \end{center}
 \vspace{0.45cm}
 \begin{itemize}
-\item Smoothing reduces abrupt control changes caused by one observation period.
-\item Resetting $t$ preserves the long-lived estimate while starting a fresh raw measurement.
-\item The fixed weights encode a stability/responsiveness trade-off.
+\item At every Estimation Period, update $T^{Active}$ using 80\% of the previous estimate and 20\% of the current accumulator.
+\item Reset the raw accumulator $t$ to zero after the update.
 \end{itemize}
 \end{frame}
 
@@ -237,29 +236,25 @@ $T_{ACK}$ & Link-layer acknowledgement airtime.\\
 \end{columns}
 \end{frame}
 
-\begin{frame}{CATRA Part A: Complete Feedback Loop}
+\begin{frame}{CATRA Part A Summary}
 \begin{center}
-\resizebox{0.94\textwidth}{!}{%
-\begin{tikzpicture}[node distance=0.55cm]
-\node[draw=MethodColor,rounded corners,fill=CardBg] (count) {Count flows};
-\node[draw=MethodColor,rounded corners,fill=CardBg,right=of count] (fbr) {$FBR_S$};
-\node[draw=MethodColor,rounded corners,fill=CardBg,right=of fbr] (air) {Estimate airtime};
-\node[draw=MethodColor,rounded corners,fill=CardBg,right=of air] (rbr) {$RBR_S$};
-\node[draw=MethodColor,rounded corners,fill=CardBg,right=of rbr] (ratio) {$RBR_S/FBR_S$};
-\node[draw=ConclusionColor,rounded corners,fill=CardBg,right=of ratio] (cw) {Adjust CW};
+\begin{tikzpicture}[node distance=0.55cm and 0.8cm]
+\node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.0cm,align=center] (count) {Count SEND, TX, and CS flows};
+\node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.0cm,align=center,right=of count] (fbr) {Calculate $FBR_S$};
+\node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.0cm,align=center,below=of count] (air) {Estimate $T^{Active}$};
+\node[draw=MethodColor,rounded corners,fill=CardBg,text width=3.0cm,align=center,right=of air] (rbr) {Calculate $RBR_S$};
+\node[draw=ConclusionColor,rounded corners,fill=CardBg,text width=3.4cm,align=center,right=0.9cm of fbr] (cw) {Compare ratios and adjust CW};
 \draw[-{Latex[length=2mm]}] (count)--(fbr);
-\draw[-{Latex[length=2mm]}] (fbr)--(ratio);
 \draw[-{Latex[length=2mm]}] (air)--(rbr);
-\draw[-{Latex[length=2mm]}] (rbr)--(ratio);
-\draw[-{Latex[length=2mm]}] (ratio)--(cw);
+\draw[-{Latex[length=2mm]}] (fbr)--(cw);
+\draw[-{Latex[length=2mm]}] (rbr)--(cw);
 \end{tikzpicture}
-}
 \end{center}
-\vspace{0.55cm}
+\vspace{0.30cm}
 \begin{itemize}
-\item Flow counts define the target share.
-\item Airtime estimation measures the realized share.
-\item CW is the MAC-layer actuator.
-\item The result targets per-station fairness, not yet per-flow fairness.
+\item Count SEND, TX, and CS flows to calculate $FBR_S$.
+\item Estimate $T^{Active}$ and calculate $RBR_S$.
+\item Compare $RBR_S$ with $FBR_S$ and adjust the CW size.
+\item The result improves per-station fairness; per-flow fairness is addressed next.
 \end{itemize}
 \end{frame}

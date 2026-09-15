@@ -2,7 +2,7 @@
 \PartDivider{PART II}{Research Problem and Gap}{Reconstruct the exact unfairness problem that motivates CATRA.}
 
 \begin{frame}{Paper Context and Scope}
-\PaperClaim{The paper studies contention between stations and between flows in IEEE 802.11 multi-hop ad hoc networks.}
+\PaperClaim{The paper focuses on contention between stations and between flows for access to the shared wireless medium.}
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
 \textbf{Included}
@@ -23,14 +23,15 @@
 \end{frame}
 
 \begin{frame}{Problem 1: MAC-Layer Unfairness}
-\PaperClaim{BEB may be unfair in multi-hop ad hoc networks: CW is chosen mainly from congestion conditions.}
+\small
+\PaperClaim{BEB may suffer from unfairness and low throughput in multi-hop ad hoc topologies.}
 \begin{center}
 \begin{tikzpicture}[node distance=0.42cm,
 flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.65cm,minimum height=0.9cm,align=center}]
 \node[flowbox] (beb) {IEEE 802.11 BEB};
-\node[flowbox,right=of beb] (state) {CW follows congestion conditions};
-\node[flowbox,right=of state] (missing) {Neighbor and higher-layer conditions are not considered};
-\node[flowbox,draw=WarningColor,right=of missing] (unfair) {CW may be unsuitable for fairness};
+\node[flowbox,right=of beb] (state) {CW is determined mainly by congestion conditions};
+\node[flowbox,right=of state] (missing) {Neighboring-station and higher-layer conditions are not considered};
+\node[flowbox,draw=WarningColor,right=of missing] (unfair) {CW may not be optimal for fairness};
 \draw[-{Latex[length=2mm]}] (beb)--(state);
 \draw[-{Latex[length=2mm]}] (state)--(missing);
 \draw[-{Latex[length=2mm]},draw=WarningColor] (missing)--(unfair);
@@ -38,9 +39,10 @@ flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.65cm
 \end{center}
 \vspace{0.15cm}
 \begin{itemize}
-\item BEB appears to give contending stations the same channel-access opportunity.
-\item It does not account for the number of flows in the channel or users in the system.
-\item Consequently, disadvantaged stations may have difficulty accessing the channel.
+\setlength{\itemsep}{1pt}
+\item BEB seems to provide contending stations the same opportunity to access the shared channel.
+\item BEB does not explicitly consider the number of flows in the channel or users in the system.
+\item Therefore, the CW after congestion may not be optimal for fairness.
 \end{itemize}
 \end{frame}
 
@@ -49,7 +51,7 @@ flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.65cm
 \begin{center}
 \begin{tikzpicture}[node distance=0.48cm,
 flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.6cm,minimum height=0.85cm,align=center}]
-\node[flowbox] (grow) {TCP AIMD grows $cwnd$};
+\node[flowbox] (grow) {TCP congestion window grows too large};
 \node[flowbox,right=of grow] (packets) {Too many packets compete};
 \node[flowbox,draw=WarningColor,right=of packets] (cont) {Network congestion increases};
 \node[flowbox,draw=WarningColor,right=of cont] (fair) {Throughput and fairness degrade};
@@ -60,22 +62,22 @@ flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.6cm,
 \end{center}
 \vspace{0.18cm}
 \begin{itemize}
-\item TCP performance in a multi-hop wireless network depends critically on $cwnd$.
-\item The paper observes that some flows receive very large bandwidth while others receive little bandwidth.
-\item Conventional TCP rate control can therefore produce unfair bandwidth sharing among flows.
+\item TCP uses a window-based AIMD congestion-control scheme.
+\item In multi-hop wireless networks, each packet competes at multiple hops.
+\item Some flows may obtain very large bandwidth while other flows obtain little bandwidth.
 \end{itemize}
 \end{frame}
 
 \input{slides/11-problem-statement}
 \input{slides/12-research-gap}
 
-\begin{frame}{Research Need: Two-Stage Control}
+\begin{frame}{CATRA: Two-Step Approach}
 \begin{center}
 \begin{tikzpicture}[node distance=0.8cm]
 \node[draw=ResearchColor,rounded corners,fill=CardBg,text width=4.2cm,align=center,minimum height=1.1cm] (s1)
 {Stage 1\\Determine a suitable CW for each station};
 \node[draw=ResearchColor,rounded corners,fill=CardBg,text width=4.2cm,align=center,minimum height=1.1cm,right=of s1] (s2)
-{Stage 2\\Regulate the sending rate of each TCP flow};
+{Stage 2\\Control TCP sending rate to achieve fair throughput for each flow};
 \draw[-{Latex[length=2.8mm]},draw=ResearchColor,line width=1.2pt] (s1)--(s2);
 \end{tikzpicture}
 \end{center}
@@ -83,20 +85,19 @@ flowbox/.style={draw=ResearchColor,rounded corners,fill=CardBg,text width=2.6cm,
 \begin{itemize}
 \item Stage 1 targets fair channel access between stations.
 \item Stage 2 targets fair bandwidth sharing between end-to-end flows.
-\item Both stages use channel-utilization information collected at MAC/PHY.
 \end{itemize}
 \end{frame}
 
 \input{slides/13-research-questions}
 
-\begin{frame}{Main Contributions of the Paper}
+\begin{frame}{Synthesized Contributions}
 \begin{enumerate}
-\item Define station-level and flow-level Fair Bandwidth Ratios.
-\item Estimate real channel utilization from packet airtime.
-\item Adapt the IEEE 802.11 contention window using $RBR_S/FBR_S$.
-\item Pass MAC/PHY utilization information to the transport layer.
-\item Adapt TCP generation delay and $cwnd$ using $RBR_f/FBR_f$.
+\item Define fair bandwidth allocation using the number of flows observed around each station.
+\item Measure real channel utilization using station active time during an Estimation Period.
+\item Modify IEEE 802.11 CW size to improve per-station fairness.
+\item Pass channel-utilization information to the Transport layer.
+\item Adjust TCP sending rate to improve per-flow fairness.
 \end{enumerate}
 \vspace{0.35cm}
-\KeyPoint{CATRA is a feedback-control design with separate actuators for station contention and flow demand.}
+\KeyPoint{CATRA first improves channel access at the MAC layer, then controls TCP sending rate for fairer per-flow throughput.}
 \end{frame}
